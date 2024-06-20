@@ -3,12 +3,9 @@ const pdf = require("html-pdf");
 const path = require("path");
 const expressLayouts = require("express-ejs-layouts");
 const app = express();
-const advancedcert = require("./docs/advancedcert");
-const simplecert = require("./docs/simplecert");
 const cookieParser = require("cookie-parser");
 const { connectToMongoDB } = require("./connect");
 const { checkForAuthentication , restrictTo } = require("./middlewares/auth");
-const Cert = require("./models/cert");
 const staticRoute = require("./routes/staticRouter");
 
 const userRoute = require("./routes/user");
