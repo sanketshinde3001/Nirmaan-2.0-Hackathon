@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+<style>
+  .hero {
+    position: relative;
+    background: url('https://images.pexels.com/photos/616412/pexels-photo-616412.jpeg') center/cover no-repeat;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Black color with 60% opacity */
+    z-index: 1; /* Ensure the overlay is behind the content */
+}
+
+.hero-content {
+    text-align: center;
+    color: #fff;
+    z-index: 2; /* Ensure the content is on top of the overlay */
+}
+
+.hero-title {
+    font-size: 3em;
+    margin-bottom: 20px;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+.hero-subtitle {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+    animation: fadeInUp 1s ease-in-out 0.5s;
+}
+
+.hero-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    text-decoration: none;
+    color: #fff;
+    background-color: #3498db;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.hero-button:hover {
+    background-color: #ffffff;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-3{
+    background-color: #c3c3c3;
+    padding: 5rem 0;
+}
+
+.gallery{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 8rem;
+}
+
+.gallery-link{
+    position: relative;
+    margin: 4rem 1rem;
+    cursor: pointer;
+}
+
+.gallery-link::before{
+    content: "";
+    position: absolute;
+    top: 2vw;
+    left: 90%;
+    width: 0.2rem;
+    height: 0;
+    background-color: #000000;
+    transition: height 0.5s;
+    z-index: 2;
+}
+
+.gallery-link:hover::before{
+    height: 80%;
+}
+
+.gallery-link::after{
+    content: "";
+    position: absolute;
+    top: 30%;
+    left: 2rem;
+    width: 0;
+    height: 0.2rem;
+    background-color: #000000;
+    transition: width 0.5s;
+}
+
+.gallery-link:hover::after{
+    width: 90%;
+}
+
+.food-img{
+    width: 24vw;
+    height: 15vw;
+    object-fit: cover;
+    box-shadow: 0.2rem 0.2rem 0.1rem #e92929, 0.4rem 0.4rem 0.1rem #a2e946, 0.6rem 0.6rem 0.1rem #297ce9, 0.8rem 0.8rem 0.1rem #e92999;
+    transition: all 0.5s;
+}
+
+.gallery-link:hover .food-img{
+    transform: scale(1.1);
+    opacity: 0.5;
+    filter: blur(0.5rem);
+    box-shadow: 1rem 1rem 0.1rem #e92929, 2rem 2rem 0.1rem #a2e946, 3rem 3rem 0.1rem #297ce9, 4rem 4rem 0.1rem #e92999;
+}
+
+.food-name{
+    position: absolute;
+    top: 3rem;
+    left: 3rem;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: 0.1rem;
+    width: 0;
+    overflow: hidden;
+    transition: width 0.3s;
+}
+
+.gallery-link:hover .food-name{
+    width: 100%;
+    transition: width 1.5s 0.4s;
+}
+
+.food-description{
+    width: 80%;
+    position: absolute;
+    bottom: 8vh;
+    left: 2rem;
+    font-size: 15px;
+    letter-spacing: 0.1rem;
+    color: #000000;
+    font-weight: 300;
+    text-transform: uppercase;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+}
+
+.gallery-link:hover .food-description{
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 1s 1s;
+}
+
+
+</style>
+<body style="background-color: black;">
+  <!-- SECTION 1 -->
+<div class="hero1">
+  <header class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Welcome to Hey Foodie</h1>
+        <p class="hero-subtitle">"Eat healthy, live Healthy!"</p>
+        <a href="/challenge" class="hero-button">Go to the Challenge</a>
+    </div>
+</header>
+</div>
+
+
+        <!-- third section -->
+        <section class="section-3">
+          <h2 class="section-heading" style="font-family: cursive; color: rgb(0, 0, 0); font-size: 40px; ">
+              Facts about Food
+          </h2>
+          <div class="gallery">
+            <a class="gallery-link">
+                  <img class="food-img" src="/public/img/carda.jpg">
+                  <h3 class="food-name">Idli Sambar</h3>
+                  
+                  <p class="food-description">
+                The fermentation process in idli batter enhances 
+                the bioavailability of certain nutrients, 
+                making them more readily absorbed by the body.
+               
+               
+                  </p>
+              </a>
+              <a class="gallery-link">
+                  <img class="food-img" src="/public/img/cardb.jpg">
+                  <h3 class="food-name">Zunka Bhakar</h3>
+                  <p class="food-description">
+                     Bhakar is Gluten free and keeps you feeling fuller for longer, and may help regulate blood sugar levels.
+                  </p>
+              </a>
+              <a class="gallery-link">
+                  <img class="food-img" src="/public/img/cardc.jpg">
+                  <h3 class="food-name">Soyabean</h3>
+                  <p class="food-description">
+                    Soybeans contain isoflavones, a type of plant compound with potential
+                     health benefits, including reducing the risk of certain cancers and improving bone health.
+                  </p>
+              </a>
+              <a class="gallery-link">
+                  <img class="food-img" src="/public/img/cardd.jpg">
+                  <h3 class="food-name">Dal Rice</h3>
+                  <p class="food-description">
+                    Dal rice is often served with vegetables or yogurt, which can further 
+                    enhance its nutritional value by adding vitamins, minerals, and healthy fats.
+                  </p>
+              </a>
+              <a class="gallery-link">
+                  <img class="food-img" src="/public/img/carde.jpg">
+                  <h3 class="food-name">Paneer</h3>
+                  <p class="food-description">
+                    Paneer is a versatile ingredient that can be incorporated into various dishes, both savory and sweet.
+                    Consider incorporating other sources of calcium and Vitamin D if paneer is not a frequent dietary staple.
+                  </p>
+              </a>
+              <a class="gallery-link">
+                  <img class="food-img" src="/public/img/cardf.jpg">
+                  <h3 class="food-name">Fruits</h3>
+                  <p class="food-description">
+                     
+                     Fruits are a fantastic source of essential vitamins, minerals, fiber, and antioxidants, making them a crucial part of a healthy diet. 
+                  </p>
+              </a>
+          </div>
+      </section>
+</body>  
+  
+  
+
+</html>

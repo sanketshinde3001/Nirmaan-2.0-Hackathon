@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop</title>
+    <style>
+        *{
+    margin: 0;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+   
+}
+
+#container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    gap: 5vmax;
+    justify-content: center;
+    background-color: #ffffff;
+}
+
+.part{
+    width: 20%;
+    height: 30vmax;
+    border: 5px dotted rgba(255, 0, 0, 0.914);
+    display: flex;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.box{
+    width: 40%;
+    height: 6vmax;
+    background-color: rgb(223, 240, 255);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4vmax;
+    padding-left: 0.5vmax;
+    justify-content: center;
+    border-radius: 20px;
+
+}
+
+.box img{
+    height: 4.5vmax;
+
+}
+
+
+.bname{
+    font-size: 1vmax;
+}
+    </style>
+</head>
+<body>
+    <div style=" text-align:center; margin:20px;"><h2 style="font-family: cursive;">Find alternate meal to complete calories of 1 large pizza with 500kcal</h2></div>
+    <div id="container">
+        
+       
+        <div id="one" class="part" style="border: 5px dotted rgb(19, 227, 88);">
+            <div class="box" draggable="true" data-value=""><img src="" draggable="false"><h2 class="bname">Box 1 
+            </h2></div>
+            <div class="box" draggable="true" data-value=""><img src="" draggable="false"><h2 class="bname">Box 2 </h2></div>
+            <div class="box" draggable="true" data-value=""><img src="" draggable="false"><h2 class="bname">Box 3 </h2></div>
+            <div class="box" draggable="true" data-value=""><img src="" draggable="false"><h2 class="bname">Box 4 </h2></div>
+            <div class="box" draggable="true" data-value=""><img src="" draggable="false"><h2 class="bname">Box 5 </h2></div>
+            <div class="box" draggable="true" data-value=""><img src="" draggable="false"><h2 class="bname">Box 6 </h2></div>
+            <div class="box" draggable="true" data-value=""><img src="" draggable="false"><h2 class="bname">Box 7 </h2></div>
+            <div class="box" draggable="true" data-value=""><img src="" draggable="false"><h2 class="bname">Box 8 </h2></div>
+        </div>
+        <div id="total" style="font-family: cursive;">Total kcal: 0</div>
+        <div id="two" class="part" style="border: 5px dotted rgb(250, 6, 6);"></div>
+    </div>
+    
+</body>
+<script>
+    let selected = null;
+
+    const selectb = document.getElementsByClassName("box"); // Select all boxes
+    const leftb = document.getElementById("one"); // Reference for "one" element
+    const rightb = document.getElementById("two"); // Reference for "two" element
+    const totalDisplay = document.getElementById("total"); // Reference for "total" element
+    
+    for (const x of selectb) { // Loop through each box
+      x.addEventListener("dragstart", function (e) {
+        selected = e.target; // Set the dragged box as selected
+      });
+    }
+    
+    rightb.addEventListener("dragover", function(e) {
+      e.preventDefault(); // Allow dropping on right side
+    });
+    
+    rightb.addEventListener("drop", function(e) {
+      if (selected !== null) {
+        rightb.appendChild(selected); // Move box to right side
+        updateTotal(); // Update total value
+        selected = null; // Clear selected state
+      }
+    });
+    
+    leftb.addEventListener("dragover", function(e) {
+      e.preventDefault(); // Allow dropping on left side
+    });
+    
+    leftb.addEventListener("drop", function(e) {
+      if (selected !== null) {
+        leftb.appendChild(selected); // Move box to left side
+        updateTotal(); // Update total value
+        selected = null; // Clear selected state
+      }
+    });
+    
+    // Function to update total value based on data-value attribute
+    function updateTotal() {
+      let boxesInRight = rightb.querySelectorAll(".box");
+      let totalValue = 0;
+    
+      boxesInRight.forEach((box) => {
+        const value = parseInt(box.dataset.value) || 0; // Get data-value and handle potential absence
+        totalValue += value;
+      });
+      
+    
+      totalDisplay.textContent = "Total kcal: " + totalValue;
+     
+      if(totalValue>=500){
+        alert("Hey Foodie!!! Good Work You have Succesfully created today's Healthy Meal!!!")
+      }
+    }
+    
+    // Function to display random images and assign data values to the boxes
+    function displayRandomImages() {
+      const imageElements = document.querySelectorAll(".box img");
+      const dataValueElements = document.querySelectorAll(".box .bname");
+      const images = ["apple.png", "banana.png", "pineapple.png","chapati.png","egg.png","milk.png","rice.png","paneer.png"]; 
+      const dataValues = {
+        "apple.png":52,
+         "banana.png":89, 
+         "pineapple.png":50 ,
+         "chapati.png":120,
+         "egg.png":156,
+         "milk.png":42,
+         "rice.png":130,
+         "paneer.png":265
+      };
+
+      // Shuffle images array
+      for (let i = images.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [images[i], images[j]] = [images[j], images[i]];
+      }
+
+      for (let i = 0; i < imageElements.length; i++) {
+        imageElements[i].src = "public/img" + "/" + images[i]; // Update image source
+        dataValueElements[i].textContent = "kcal: " + dataValues[images[i]]; // Set data-value on the box
+        document.querySelectorAll(".box")[i].setAttribute("data-value", dataValues[images[i]]);
+      }
+
+      updateTotal(); // Update total value display
+    }
+    
+    displayRandomImages(); 
+    // Call the function to display random images and assign data values
+
+     // Add reveal button functionality
+    
+</script>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+    }
+
+    #quiz-container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #options-container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+
+    .option {
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .option:hover {
+      transform: scale(1.1);
+    }
+
+    #feedback-container {
+      margin-top: 20px;
+    }
+
+    #feedbackContainer {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    h3 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    strong {
+        color: #555;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    ul li {
+        margin-bottom: 5px;
+    }
+
+    ul li:before {
+        content: "\2022"; /* Use a bullet point as a list item marker */
+        color: #555;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+    }
+  </style>
+  <title>Quiz</title>
+</head>
+
+<body>
+
+  <div id="quiz-container" style="margin-top: 150px;">
+    <h2 id="question">What you will choose?</h2>
+
+    <div id="options-container">
+      <div class="option" onclick="displayInfo(0)">
+        <img id="option1-img" alt="Option 1" style="height: 150px;">
+      </div>
+      <div class="option" onclick="displayInfo(1)">
+        <img id="option2-img" alt="Option 2" style="height: 150px;">
+      </div>
+    </div>
+
+    <div id="feedback-container"></div>
+
+    <button onclick="nextComparison()" id="next-btn" style="display: none;">Next</button>
+  </div>
+
+  <script>
+    var currentComparison = 0;
+
+    var comparisons = [
+      {
+        option1: {
+            title:"Bad Choice !",
+          image: "/public/img/chips.jpg",
+          name: "Potato Chips",
+          info: {
+            title:"Bad Choice !",
+            pros: ["Convenient Snack", "Taste"],
+            cons: ["High in Saturated Fat", "Low in Nutrients", "High in Sodium"],
+            nutritionalInfo: {
+              calories: "~536 kcal",
+              protein: "~6.6g",
+              fiber: "~3.3g",
+              fat: "~34.4g",
+              carbohydrates: "~51.4g"
+            }
+          }
+        },
+        option2: {
+            title:"Good Choice Foodie !",
+          image: "/public/img/chana.jpg",
+          name: "Roasted Chana (Chickpeas)",
+          info: {
+            pros: ["Rich in Protein", "High in Fiber", "Micronutrients", "Low in Saturated Fat"],
+            cons: ["Caloric Content", "Contains Carbohydrates"],
+            nutritionalInfo: {
+              calories: "~164 kcal",
+              protein: "~8.9g",
+              fiber: "~8.6g",
+              fat: "~2.6g",
+              carbohydrates: "~27.4g"
+            }
+          }
+        }
+      },
+      {
+        option1: {
+            title:"Bad Choice !",
+          image: "/public/img/burger.jpg",
+          name: "Burger",
+          info: {
+            pros: ["Tasty", "Quick Meal Option"],
+            cons: ["High in Saturated Fat", "High in Calories", "Low in Nutrients"],
+            nutritionalInfo: {
+              calories: "~250 kcal",
+              protein: "~12g",
+              fiber: "~1.5g",
+              fat: "~15g",
+              carbohydrates: "~20g"
+            }
+          }
+        },
+        option2: {
+            title:"Good Choice Foodie !",
+          image: "/public/img/salad.jpg",
+          name: "Salad",
+          info: {
+            pros: ["Low in Calories", "Rich in Vitamins and Minerals", "High in Fiber"],
+            cons: ["Not as Filling", "May Lack Protein"],
+            nutritionalInfo: {
+              calories: "~100 kcal",
+              protein: "~5g",
+              fiber: "~3g",
+              fat: "~5g",
+              carbohydrates: "~10g"
+            }
+          }
+        }
+      },
+      
+    ];
+
+    function updateUI() {
+      var questionElement = document.getElementById('question');
+      var option1ImgElement = document.getElementById('option1-img');
+      var option2ImgElement = document.getElementById('option2-img');
+      var nextBtn = document.getElementById('next-btn');
+      var feedbackContainer = document.getElementById('feedback-container');
+
+      if (currentComparison < comparisons.length) {
+        questionElement.innerHTML = 'What you will choose?';
+
+        option1ImgElement.src = comparisons[currentComparison].option1.image;
+        option2ImgElement.src = comparisons[currentComparison].option2.image;
+
+        nextBtn.style.display = 'none';
+        feedbackContainer.innerHTML = '';
+      } else {
+        questionElement.innerHTML = 'Quiz Completed';
+        option1ImgElement.style.display = 'none';
+        option2ImgElement.style.display = 'none';
+        nextBtn.style.display = 'none';
+        // feedbackContainer.innerHTML = '<p>Thank you for taking the quiz!</p>';
+        feedbackContainer.innerHTML =
+        '<p>Thank you for taking the quiz!</p>' +
+        '<button onclick="reloadPage()">Retry Quiz</button>';
+      }
+    }
+
+    function reloadPage() {
+        location.reload();
+    }
+
+    function displayInfo(optionIndex) {
+      var feedbackContainer = document.getElementById('feedback-container');
+      var nextBtn = document.getElementById('next-btn');
+      var option = comparisons[currentComparison]["option" + (optionIndex + 1)];
+
+      feedbackContainer.innerHTML ='<h4>' + option.title + '</h4>' + 
+        '<h3>' + option.name + ':</h3>' +
+        '<strong>Pros:</strong>' +
+        '<ul>' +
+        option.info.pros.map(pro => `<li>${pro}</li>`).join('') +
+        '</ul>' +
+        '<strong>Cons:</strong>' +
+        '<ul>' +
+        option.info.cons.map(con => `<li>${con}</li>`).join('') +
+        '</ul>' +
+        '<strong>Nutritional Information (per 100g):</strong>' +
+        '<ul>' +
+        Object.entries(option.info.nutritionalInfo).map(([key, value]) => `<li>${key}: ${value}</li>`).join('') +
+        '</ul>';
+
+      nextBtn.style.display = 'block';
+    }
+
+    function nextComparison() {
+      currentComparison++;
+      updateUI();
+    }
+
+    // Initial UI update
+    updateUI();
+  </script>
+
+</body>
+
+</html>

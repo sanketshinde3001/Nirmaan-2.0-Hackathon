@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <style>
+      h2{
+        font-family: cursive ;
+        font-size: 30px;
+    }
+    p{
+      font-family: cursive;
+    }
+    label{font-family: cursive;}
+    button{font-family: cursive;}
+    .bmi-calculator {
+      margin: 20px auto;
+      width: 50%;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #result {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .bmi-image {
+      width: 150px;
+      margin: 0 auto;
+      display: block;
+      
+    }
+
+    /* Responsive styles for smaller screens */
+    @media (max-width: 768px) {
+      .bmi-calculator {
+        width: 80%;
+      }
+    }
+    </style>
+</head>
+<body>
+    <div class="container " style="margin-top: 100px;">
+        <br>
+        <h2><b>Find Your BMI</b></h2>
+        <br><br>
+        <div class="row">
+            <div class="col-md-6">
+
+              <form id="bmiForm">
+                <div class="form-group">
+                  <label for="weight">Weight (kg):</label>
+                  <input type="number" id="weight" name="weight" required>
+                </div>
+                <div class="form-group">
+                  <label for="height">Height (cm):</label>
+                  <input type="number" id="height" name="height" required>
+                </div>
+                <button type="button" onclick="calculateBMI()">Calculate BMI</button>
+                <button type="button" onclick="addToDataset()">Add to Dataset</button>
+              </form>
+              <p id="result"></p>
+              <p id="result1"></p>
+
+            </div>
+            
+            <div class="col-md-6">
+              
+              <img id="bmiImage" class="bmi-image" style="mix-blend-mode: multiply;" src="/public/img/underw.png" alt="BMI Classification Image">
+              
+            </div>
+
+          
+          </div>
+     </div>
+
+     <br>
+     <br>
+     <hr>
+     <br>
+     <br> 
+</body> 
+
+
+
+    
+    <script>
+      function calculateBMI() {
+        const weight = document.getElementById("weight").value;
+        const height = document.getElementById("height").value;
+  
+        if (weight <= 0 || height <= 0) {
+          alert("Please enter valid weight and height (positive values only).");
+          return;
+        }
+  
+        const bmi = weight / ((height / 100) * (height / 100));
+        
+  
+        let bmiInterpretation;
+        let bmiImageSrc;
+        if (bmi < 18.5) {
+          bmiInterpretation = "Underweight";
+          bmiImageSrc = "/public/img/underw.png";
+        } else if (bmi >= 18.5 && bmi <= 24.9) {
+          bmiInterpretation = "Normal weight";
+          bmiImageSrc = "/public/img/normal.png";
+        } else if (bmi >= 25 && bmi <= 29.9) {
+          bmiInterpretation = "Overweight";
+          bmiImageSrc = "/public/img/overw.png";
+        } else {
+          bmiInterpretation = "Obese";
+          bmiImageSrc = "/public/img/obese.png";
+        }
+  
+        const resultText = `Your BMI is ${bmi}. You are classified as ${bmiInterpretation}.`;
+        document.getElementById("result1").innerHTML = resultText;
+        document.getElementById("result").innerHTML = bmi;
+        document.getElementById("bmiImage").src = bmiImageSrc;
+      }
+
+      function addToDataset() {
+        // Fetch the BMI value from the result paragraph
+        var bmiValue = document.getElementById("result").innerText;
+
+        // Assuming you have an API endpoint to add data to the database
+        // You may need to customize this based on your backend implementation
+        fetch('/api/addBMI', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ bmi: bmiValue }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert('BMI added to the dataset successfully!');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Failed to add BMI to the dataset.');
+        });
+    }
+      </script>
+    
+</html>
